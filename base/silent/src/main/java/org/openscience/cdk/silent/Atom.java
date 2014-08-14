@@ -49,7 +49,7 @@ import org.openscience.cdk.tools.periodictable.PeriodicTable;
  * </pre>
  *
  * <p>More examples about using this class can be found in the
- * Junit test for this class.
+ * JUnit test for this class.
  *
  * @cdk.module  silent
  * @cdk.githash

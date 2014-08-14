@@ -112,7 +112,7 @@ public class BioPolymer extends Polymer implements java.io.Serializable, IBioPol
 		if(atomCount != super.getAtomCount() && // OK, super did not yet contain the atom
 			   // Add atom to Strand (also adds the atom to the monomer).
 		       oStrand != null)	{
-			oStrand.addAtom(oAtom, oMonomer);	// Same problem as above: better to throw nullpointer exception?
+			oStrand.addAtom(oAtom, oMonomer);	// Same problem as above: better to throw null pointer exception?
 			if (!strands.containsKey(oStrand.getStrandName())) {
 				strands.put(oStrand.getStrandName(), oStrand);
 			}

@@ -238,7 +238,7 @@ public final class SmilesGenerator {
     /**
      * Create a generator for generic SMILES. Generic SMILES are 
      * non-canonical and useful for storing information when it is not used
-     * as an index (i.e. unique keys). The generated SMILES is dependant on
+     * as an index (i.e. unique keys). The generated SMILES is dependent on
      * the input order of the atoms.
      * 
      * @return a new arbitrary SMILES generator

@@ -19,7 +19,7 @@ package org.openscience.cdk.silent;
 import org.openscience.cdk.interfaces.IPDBStructure;
 
 /**
- * Holder for secundary protein structure elements. Lously modeled after
+ * Holder for secondary protein structure elements. Loosely modeled after
  * the Jmol Structure.java.
  * 
  * @author     egonw

@@ -242,7 +242,7 @@ public class FixBondOrdersTool {
 
         IRingSet rs = Cycles.sssr(m).toRingSet();
 
-        //remove rings which dont have all aromatic atoms (according to hybridization set by lower case symbols in smiles):
+        //remove rings which don't have all aromatic atoms (according to hybridization set by lower case symbols in smiles):
         Iterator<IAtomContainer> i = rs.atomContainers().iterator();
         while (i.hasNext()) {
             IRing r = (IRing) i.next();

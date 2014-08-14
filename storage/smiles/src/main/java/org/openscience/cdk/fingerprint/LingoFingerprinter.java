@@ -56,7 +56,7 @@ public class LingoFingerprinter implements IFingerprinter {
     Pattern ringClosurePattern = Pattern.compile("[0-9]+");
 
     /**
-     * Initialize the fingerprinter with a defult substring length of 4.
+     * Initialize the fingerprinter with a default substring length of 4.
      */
     @TestMethod("testFingerprint")
     public LingoFingerprinter() {

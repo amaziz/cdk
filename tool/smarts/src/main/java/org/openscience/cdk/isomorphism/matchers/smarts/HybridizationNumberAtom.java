@@ -41,7 +41,7 @@ public class HybridizationNumberAtom extends SMARTSAtom {
     /**
      * Creates a new instance
      *
-     * @param hybridizationNumber the hybridiation
+     * @param hybridizationNumber the hybridization
      */
     public HybridizationNumberAtom(int hybridizationNumber, IChemObjectBuilder builder) {
         super(builder);

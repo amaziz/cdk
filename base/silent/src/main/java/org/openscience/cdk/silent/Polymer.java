@@ -78,7 +78,7 @@ public class Polymer extends AtomContainer implements java.io.Serializable, IPol
 		if(!contains(oAtom))	{
 			super.addAtom(oAtom);
 			
-			if(oMonomer != null)	{	// Not sure what's better here...throw nullpointer exception?
+			if(oMonomer != null)	{	// Not sure what's better here...throw null pointer exception?
 				oMonomer.addAtom(oAtom);				
 				if (! monomers.containsKey(oMonomer.getMonomerName())) {
 					monomers.put(oMonomer.getMonomerName(), oMonomer);

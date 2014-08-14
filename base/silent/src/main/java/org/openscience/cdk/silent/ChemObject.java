@@ -199,7 +199,7 @@ public class ChemObject implements Serializable, IChemObject, Cloneable
 	 *@param  description  An object description of the property (most likely a
 	 *      unique string)
 	 *@return              The object containing the property. Returns null if
-	 *      propert is not set.
+	 *      property is not set.
 	 *@see                 #setProperty
 	 *@see                 #removeProperty
 	 */

@@ -58,7 +58,7 @@ import java.util.StringTokenizer;
  * from the SMILES even if the structures are not considered aromatic. For
  * example 'c1ccc1' will correctly have two pi bonds assigned but the
  * atoms/bonds will still be flagged as aromatic. Recomputing or clearing the
- * aromaticty will remove these erroneous flags. If a kekulé structure could not
+ * aromaticity will remove these erroneous flags. If a kekulé structure could not
  * be assigned this is considered an error. The most common example is the
  * omission of hydrogens on aromatic nitrogens (aromatic pyrrole is specified as
  * '[nH]1cccc1' not 'n1cccc1'). These structures can not be corrected without

@@ -41,7 +41,7 @@ import org.openscience.cdk.interfaces.IBond;
  * orders may not make sense at this point.
  * <p/>
  * In general code that assumes bonds are 2-centered can use this class seamlessly, as
- * the semantics are identical to the older versions. Care shoud be exercised when
+ * the semantics are identical to the older versions. Care should be exercised when
  * using multi-center bonds using this class as the orders may not make sense.
  *
  * @author steinbeck

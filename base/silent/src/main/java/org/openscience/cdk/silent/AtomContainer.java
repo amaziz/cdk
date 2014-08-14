@@ -851,7 +851,7 @@ public class AtomContainer extends ChemObject
 	/**
 	 *  Returns the number of connected atoms (degree) to the given atom.
 	 *
-	 *@param  atomNumber  The atomnumber the degree is searched for
+	 *@param  atomNumber  The atom number the degree is searched for
 	 *@return             The number of connected atoms (degree)
 	 */
 	public int getConnectedBondsCount(int atomNumber)

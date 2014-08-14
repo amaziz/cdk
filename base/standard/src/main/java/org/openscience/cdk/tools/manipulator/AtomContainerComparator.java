@@ -140,9 +140,9 @@ public class AtomContainerComparator implements Comparator<IAtomContainer> {
   /**
    * Returns the molecular weight (exact mass) of the major isotopes
    * of all heavy atoms of the given IAtomContainer.
-   * @param atomContainer an IAtomContainer to calculate the mocular weight for
+   * @param atomContainer an IAtomContainer to calculate the molecular weight for
    * @throws org.openscience.cdk.exception.CDKException if an error occurs with the IsotopeFactory
-   * @return the molecularweight (exact mass) of the major isotopes
+   * @return the molecular weight (exact mass) of the major isotopes
    *         of all heavy atoms of the given IAtomContainer
    */
   private double getMolecularWeight(IAtomContainer atomContainer) throws CDKException {

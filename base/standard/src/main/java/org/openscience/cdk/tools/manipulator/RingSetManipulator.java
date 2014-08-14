@@ -38,7 +38,7 @@ import java.util.List;
 @TestClass("org.openscience.cdk.tools.manipulator.RingSetManipulatorTest")
 public class RingSetManipulator {
     /**
-     * Return the total number of atoms over all the rings in the colllection.
+     * Return the total number of atoms over all the rings in the collection.
      *
      * @param set The collection of rings
      * @return  The total number of atoms
@@ -90,7 +90,7 @@ public class RingSetManipulator {
 	}
 
     /**
-     * Return the total number of bonds over all the rings in the colllection.
+     * Return the total number of bonds over all the rings in the collection.
      *
      * @param set The collection of rings
      * @return The total number of  bonds
@@ -141,7 +141,7 @@ public class RingSetManipulator {
 	 *
 	 * @param ringSet The collection of rings
      * @param   bond  A bond which must be contained by the heaviest ring
-	 * @return  The ring with the higest number of double bonds connected to a given bond
+	 * @return  The ring with the highest number of double bonds connected to a given bond
 	 */
     @TestMethod("testGetHeaviestRing_IRingSet_IBond")
     public static IRing getHeaviestRing(IRingSet ringSet, IBond bond)
@@ -236,7 +236,7 @@ public class RingSetManipulator {
 	  
 	  /**
 	   * Checks - and returns 'true' - if a certain ring is already
-	   * stored in the ringset. This is not a test for equality of Ring
+	   * stored in the ring set. This is not a test for equality of Ring
 	   * objects, but compares all Bond objects of the ring. 
 	   *
 	   * @param   newRing  The ring to be tested if it is already stored

@@ -1061,7 +1061,7 @@ public class AtomContainerManipulator {
 	/**
 	 *  A method to remove ElectronContainerListeners.
 	 *  ElectronContainerListeners are used to detect changes
-	 *  in ElectronContainers (like bonds) and to notifiy
+	 *  in ElectronContainers (like bonds) and to notify
 	 *  registered Listeners in the event of a change.
 	 *  If an object looses interest in such changes, it should
 	 *  unregister with this AtomContainer in order to improve
