@@ -22,9 +22,6 @@
  */
 package org.openscience.cdk.qsar.descriptors.molecular;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -33,17 +30,28 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.aromaticity.Aromaticity;
+import org.openscience.cdk.aromaticity.ElectronDonation;
+import org.openscience.cdk.graph.Cycles;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.isomorphism.IsomorphismTester;
 import org.openscience.cdk.isomorphism.matchers.IQueryAtomContainer;
 import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.qsar.result.DoubleResult;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesParser;
+import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
+import org.openscience.cdk.smiles.smarts.parser.SMARTSParser;
 import org.openscience.cdk.templates.MoleculeFactory;
+import org.openscience.cdk.tools.CDKHydrogenAdder;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 public class PKASmartsDescriptorTest {
-	protected PKASmartsDescriptor pka;
+
+	private PKASmartsDescriptor pka;
+	private final CDKHydrogenAdder hAdder = CDKHydrogenAdder.getInstance(SilentChemObjectBuilder.getInstance());
+	private SmilesParser smiParser = new SmilesParser(SilentChemObjectBuilder.getInstance());
+	private Aromaticity cdk = new Aromaticity(ElectronDonation.cdk(), Cycles.all());
+
     @Before
     public void setUp() throws Exception {
     	 pka = new PKASmartsDescriptor();
@@ -52,13 +60,12 @@ public class PKASmartsDescriptorTest {
     @After
     public void tearDown() throws Exception {
     	pka = null;
-    }	
+    }
 
     @Test
     public void test() throws Exception {
         Hashtable<Integer,PKANode> tree = pka.getTree();
         Enumeration<Integer> k = tree.keys();
-        SmartsPatternAmbit pattern = new SmartsPatternAmbit(SilentChemObjectBuilder.getInstance());
         ArrayList<String> smarts = new ArrayList<String>();
         int failedNodes = 0;
         int failedSmarts = 0;
@@ -70,11 +77,10 @@ public class PKASmartsDescriptorTest {
             try {
                 if (node.getSmarts() == null) {
                     nullSmarts++;
-                } else
-                	pattern.setSmarts(node.getSmarts());
-            } catch (Exception x) {
-            	
-            	
+                } else {
+                	new SMARTSQueryTool(node.getSmarts(), SilentChemObjectBuilder.getInstance());
+                }
+            } catch (IllegalArgumentException x) {
                 failedNodes ++;
                 if (smarts.indexOf(node.getSmarts())<0) {
                     smarts.add(node.getSmarts());
@@ -82,195 +88,89 @@ public class PKASmartsDescriptorTest {
                 }
             }
         }
-
-        if (smarts.size()>0) {
-        	/*
-            System.out.println("Failed nodes "+failedNodes);
-            System.out.println("Failed smarts "+failedSmarts);        	
-	        for (int i=0; i < smarts.size();i++)
-	            System.out.println('\''+smarts.get(i)+'\'');
-	            */
-        }
-        
         Assert.assertEquals(1,nullSmarts); //root smarts
-        Assert.assertTrue(failedNodes==0);
+        Assert.assertEquals(0, failedSmarts);
+        Assert.assertEquals(0, failedNodes);
         Assert.assertEquals(1527,allnodes);
         
     }
+
     @Test
     public void testAcidPkaNode() throws Exception {
-    	 IAtomContainer mol = SmartsHelper.getMoleculeFromSmiles("O[N+](=O)[O-]");
-    	 	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-    		ha.setAddEexplicitHydrogens(true);
-    		mol = ha.process(mol);
-    		CDKHueckelAromaticityDetector.detectAromaticity(mol);
-    		AtomConfigurator cfg = new AtomConfigurator();
-    		cfg.process(mol);
-    	PKANode node = new PKANode();
-    	node.setSmarts("[#G6;H][i]");
-    	Assert.assertTrue(node.find(mol));
+    	 IAtomContainer mol = smiParser.parseSmiles("O[N+](=O)[O-]");
+    	 AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+    	 hAdder.addImplicitHydrogens(mol);
+    	 AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
+    	 cdk.apply(mol);
+    	 PKANode node = new PKANode();
+    	 node.setSmarts("[#G6;H][i]");
+    	 Assert.assertTrue(node.find(mol));
     }
     
     @Test
     public void test462() throws Exception {
-    	 IAtomContainer mol = SmartsHelper.getMoleculeFromSmiles("O[N+](=O)[O-]");
-    	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-    	ha.setAddEexplicitHydrogens(true);
-    	mol = ha.process(mol);
-    	CDKHueckelAromaticityDetector.detectAromaticity(mol);
-    	AtomConfigurator cfg = new AtomConfigurator();
-    	cfg.process(mol);
+    	IAtomContainer mol = smiParser.parseSmiles("O[N+](=O)[O-]");
+    	AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+    	hAdder.addImplicitHydrogens(mol);
+    	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
+    	cdk.apply(mol);
     	PKANode node = new PKANode();
     	node.setSmarts("[i][#G6v2]");
     	Assert.assertFalse(node.find(mol));
     }
-    
+
     @Test
     public void testAcid15()  throws Exception {
-    	testIsomorphismTester("[i][#G6v2]", "O[N+](=O)[O-]");
-    }
-    public void testIsomorphismTester(String smarts, String smiles) throws Exception
-    { 
-    	SmartsParser sp = new SmartsParser();
-    	sp.mSupportMOEExtension = true;
-    	sp.mUseMOEvPrimitive = true;
-     IAtomContainer mol = SmartsHelper.getMoleculeFromSmiles(smiles);
-     
- 	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-	ha.setAddEexplicitHydrogens(true);
-	mol = ha.process(mol);
-	
-     IQueryAtomContainer query  = sp.parse(smarts);
-     sp.setNeededDataFlags();
-     String errorMsg = sp.getErrorMessages();
-     if (!errorMsg.equals(""))
-     {
-    	 throw new Exception(errorMsg);
+    	String smarts = "[i][#G6v2]";
+    	String smiles = "O[N+](=O)[O-]";
 
-     }      
-     IsomorphismTester isoTester = new IsomorphismTester();
-     isoTester.setQuery(query);
-     sp.setSMARTSData(mol);
+    	IQueryAtomContainer query = SMARTSParser.parse(smarts, SilentChemObjectBuilder.getInstance());
+    	
+    	IAtomContainer mol = smiParser.parseSmiles(smiles);
+    	AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+    	hAdder.addImplicitHydrogens(mol);
+    	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
 
-     Assert.assertFalse(isoTester.hasIsomorphism(mol));
-     //boolean res = checkSequence(query,isoTester.getSequence());
-     //isoTester.printDebugInfo();
-     //System.out.println("sequnce check  -- > " + res);  
+    	IsomorphismTester isoTester = new IsomorphismTester();
+    	Assert.assertFalse(isoTester.isIsomorphic(mol, query));
     }
-    
-    public static  IMolecule getMoleculeFromSmiles(String smi)  throws Exception { 
-     SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());   
-     return sp.parseSmiles(smi);
-    }
-    
-    //
+
     @Test
     public void testAcid() throws Exception {
-    	SmilesParser parser = new SmilesParser(SilentChemObjectBuilder.getInstance());
-    	IAtomContainer a = parser.parseSmiles("O[N+](=O)[O-]");
-		AtomConfigurator cfg = new AtomConfigurator();
-    	cfg.process(a);		    
-    
-    	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-    	ha.setAddEexplicitHydrogens(true);
-    	a = ha.process(a);
+    	IAtomContainer mol = smiParser.parseSmiles("O[N+](=O)[O-]");
+    	AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+    	hAdder.addImplicitHydrogens(mol);
+    	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
+    	cdk.apply(mol);
     	
-    	CDKHueckelAromaticityDetector.detectAromaticity(a);
-		//otherwise getValency() of H atoms returns null (since cdk 1.3.6)
-    	cfg.process(a);		 
-    	
-		for (int i=0; i < a.getAtomCount();i++) {
-			/*
-			System.out.print(a.getAtom(i).getSymbol());
-			System.out.print('\t');
-			System.out.print(a.getAtom(i).getFlag(CDKConstants.ISAROMATIC));
-			System.out.print('\t');
-			System.out.print(String.format("valency %d",a.getAtom(i).getValency()));
-			System.out.print('\t');
-			System.out.println(a.getAtom(i).getAtomTypeName());
-			*/
-			Assert.assertNotNull(a.getAtom(i).getValency());
-		}    	
-		//System.out.println();
-		
-    	
-	
-		for (int i=0; i < a.getAtomCount();i++) {
-			Assert.assertNotNull(a.getAtom(i).getValency());
+		for (int i=0; i < mol.getAtomCount();i++) {
+			Assert.assertNotNull(mol.getAtom(i).getValency());
 		}
-
-		for (int i=0; i < a.getBondCount();i++) {
-			Assert.assertNotNull(a.getBond(i).getOrder());
-		}		
-		DescriptorValue value = pka.calculate(a);
+		for (int i=0; i < mol.getBondCount();i++) {
+			Assert.assertNotNull(mol.getBond(i).getOrder());
+		}
+		DescriptorValue value = pka.calculate(mol);
 		Assert.assertNotNull(value.getValue());
-		Assert.assertNotNull(((VerboseDescriptorResult)value.getValue()).getExplanation());
+		// the next doesn't work with the CDK yet (but hopefully in the future!)
+		// Assert.assertNotNull(((DescriptorResult)value.getValue()).getExplanation());
     }    
+
     @Test
     public void testOne() throws Exception {
-    	SmilesParser parser = new SmilesParser(SilentChemObjectBuilder.getInstance());
-    	IAtomContainer a = MoleculeFactory.makeBenzene();
-    	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-    	//SmartParser throws error if explicit hydrogens are used - fixed
-    	ha.setAddEexplicitHydrogens(true);
-    	CDKHueckelAromaticityDetector.detectAromaticity(a);
-		
-		AtomConfigurator cfg = new AtomConfigurator();
-		a = cfg.process(ha.process(a));
-		for (int i=0; i < a.getAtomCount();i++) {
-			Assert.assertNotNull(a.getAtom(i).getValency());
-		}
-		for (int i=0; i < a.getBondCount();i++) {
-			Assert.assertNotNull(a.getBond(i).getOrder());
-		}		
-//        CDKHueckelAromaticityDetector.detectAromaticity(a);    		
-		DescriptorValue value = pka.calculate(a);
-		Assert.assertNotNull(value.getValue());
-    }
-    @Test
-    public void testPredictions() throws Exception {
-    	File file = File.createTempFile("ambit_results", ".csv");
-    	file.deleteOnExit();
-    	//System.out.println(file.getAbsolutePath());
-    	DelimitedFileWriter writer = new DelimitedFileWriter(new FileOutputStream(file));
-    	
-    	HydrogenAdderProcessor ha = new HydrogenAdderProcessor();
-		ha.setAddEexplicitHydrogens(true);
-		Preferences.setProperty(Preferences.STOP_AT_UNKNOWNATOMTYPES,"true");		    	
-    	InputStream in = PKASmartsDescriptor.class.getClassLoader().getResourceAsStream("ambit2/descriptors/pka/benchmark_new.csv");
-    	IteratingDelimitedFileReader reader = new IteratingDelimitedFileReader(in);
-    	while (reader.hasNext()) {
-    		Object o = reader.next();
-    		Assert.assertTrue(o instanceof IAtomContainer);
-    		IAtomContainer a = null;
-    		try {
-    			a = ha.process((IAtomContainer)o);
-	        	//AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(a);
-	            CDKHueckelAromaticityDetector.detectAromaticity(a);    		
-	    		DescriptorValue value = pka.calculate(a);
-	    		VerboseDescriptorResult<String,DoubleResult> result = (VerboseDescriptorResult<String,DoubleResult>)value.getValue(); 
-	    		a.setProperty(value.getNames()[0], result.getResult().doubleValue());
-	    		a.setProperty(value.getNames()[0]+"-trace", result.getExplanation());
-	    		
-	    		Double d = Double.valueOf(a.getProperty("pKa-SMARTS").toString());
-	    		if (!d.equals(result.getResult().doubleValue())) {
-	    			
-	    		}
-	
-	    		writer.write(a);
-    		} catch (CDKException x) {
-    			continue;
-    		} catch (AmbitException x) {
-    			continue;
-    		} catch (Exception x) {
-    			
-    			x.printStackTrace();
-    			continue;
-    		}
-	    		
+    	IAtomContainer mol = MoleculeFactory.makeBenzene();
+    	AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
+    	hAdder.addImplicitHydrogens(mol);
+    	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
+    	cdk.apply(mol);
+
+    	for (int i=0; i < mol.getAtomCount();i++) {
+    		Assert.assertNotNull(mol.getAtom(i).getValency());
     	}
-    	in.close();
-    	writer.close();
-    	
+    	for (int i=0; i < mol.getBondCount();i++) {
+    		Assert.assertNotNull(mol.getBond(i).getOrder());
+    	}
+    	DescriptorValue value = pka.calculate(mol);
+    	Assert.assertNotNull(value.getValue());
     }
+
 }
