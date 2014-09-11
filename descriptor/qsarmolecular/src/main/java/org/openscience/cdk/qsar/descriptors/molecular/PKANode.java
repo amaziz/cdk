@@ -24,7 +24,6 @@ package org.openscience.cdk.qsar.descriptors.molecular;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 
 public class PKANode {
@@ -132,7 +131,7 @@ public class PKANode {
     public boolean find(IAtomContainer atomContainer) throws CDKException {
     	if (getSmarts() != null) {
     		SMARTSQueryTool tool = new SMARTSQueryTool(
-    			getSmarts(), SilentChemObjectBuilder.getInstance()
+    			getSmarts(), atomContainer.getBuilder()
     		);
 	        return tool.matches(atomContainer);
     	} else 
