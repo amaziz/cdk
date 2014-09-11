@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.qsar.DescriptorSpecification;
 import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.IMolecularDescriptor;
@@ -202,6 +203,10 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
     }
 	public String[] getDescriptorNames() {
 		return title;
+	}
+	@Override
+	public void initialise(IChemObjectBuilder builder) {
+		// nothing to initialize at this moment
 	}
 }
 
