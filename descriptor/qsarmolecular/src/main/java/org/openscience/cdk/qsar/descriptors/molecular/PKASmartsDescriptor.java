@@ -165,6 +165,24 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
                     	 //quick fix for MOE incompatibilities
                     	 s = s.replace("[Ov2]","[O;v2]");
                     	 s = s.replace("[Av1]","[A;v1]");
+                    	 s = s.replace("[#G6H]","[#6H,#16H]");
+                    	 s = s.replace("[i]","[^1,^2]");
+                    	 s = s.replace("#G6;H","G14;H");
+                    	 s = s.replace("!#G4","!G12");
+                    	 s = s.replace("#G6v2","G14v2");
+                    	 s = s.replace("#G6","G14");
+                    	 s = s.replace("#G7","G7");
+                    	 s = s.replace("[i;!r]","[^1,^2;!r]");
+                    	 s = s.replace("[*;i]","[*;^1,^2]");
+                    	 s = s.replace("[!i]","[!^1,!^2]");
+                    	 s = s.replace(";!i",";!^1,!^2");
+                    	 s = s.replace("[#N]","[O,N,F,Cl,Br]");
+                    	 s = s.replace("[i;q3]","[^1,^2;q3]");
+                    	 s = s.replace(";q3",";x3");
+                    	 s = s.replace("[A;i]","[A;^1,^2]");
+                    	 s = s.replace("[A!i]","[A!^1,!^2]");
+                    	 s = s.replace("[#G5]","[G5]");
+                    	 s = s.replace("[!#N]","[!O;!N;!F;!Cl;!Br]");
                     	 node.setSmarts(s); break;
                     	 }
                      case 5: {
