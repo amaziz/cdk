@@ -107,10 +107,10 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
 
     public DescriptorSpecification getSpecification() {
         return new DescriptorSpecification(
-        		String.format(Property.AMBIT_DESCRIPTORS_ONTOLOGY,"pkaSMARTS"),
-        		this.getClass().getName(),
-                "$Id$",
-                "http://pubs.acs.org/doi/abs/10.1021/ci8001815");
+        	"http://ambit.sourceforge.net/descriptors.owl#pkaSMARTS",
+        	this.getClass().getName(),
+            "The Chemistry Development Kit"
+        );
     }
 
     public void setParameters(Object[] arg0) throws CDKException {
