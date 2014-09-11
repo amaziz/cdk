@@ -22,14 +22,14 @@
  */
 package org.openscience.cdk.qsar.descriptors.molecular;
 
-import java.util.Hashtable;
-
+import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
+import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 
 public class PKANode {
-	protected static Hashtable<String,SmartsPatternAmbit> smartsPattern = new Hashtable<String,SmartsPatternAmbit>();
-    protected int id;
+
+	protected int id;
     protected int parent;
     protected double pka;
     protected double pka_range;
@@ -129,17 +129,12 @@ public class PKANode {
         return b.toString();
     }
     
-    public boolean find(IAtomContainer ac) throws SMARTSException {
-    	if (getSmarts() !=null) { 
-	    	SmartsPatternAmbit pattern = smartsPattern.get(getSmarts());
-	    	if (pattern == null) {
-	    		pattern = new SmartsPatternAmbit(SilentChemObjectBuilder.getInstance());
-	    		pattern.useMOEvPrimitive(true);
-	    		pattern.setUseCDKIsomorphism(false);
-	    		pattern.setSmarts(getSmarts());
-	    		smartsPattern.put(getSmarts(), pattern);
-	    	}
-	        return pattern.hasSMARTSPattern(ac)>0;
+    public boolean find(IAtomContainer atomContainer) throws CDKException {
+    	if (getSmarts() != null) {
+    		SMARTSQueryTool tool = new SMARTSQueryTool(
+    			getSmarts(), SilentChemObjectBuilder.getInstance()
+    		);
+	        return tool.matches(atomContainer);
     	} else 
     		return true;
     }

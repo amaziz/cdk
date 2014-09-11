@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -114,7 +113,7 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
 
     }
 
-    protected PKANode traverse(IAtomContainer ac, PKANode node) {
+    protected PKANode traverse(IAtomContainer ac, PKANode node) throws CDKException {
     	
     	if (node.isTerminal()) {
     		return node;
