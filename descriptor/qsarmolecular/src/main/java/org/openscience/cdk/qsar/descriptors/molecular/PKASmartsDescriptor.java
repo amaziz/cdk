@@ -138,7 +138,7 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
     	return null;
     }
     protected PKANode initialize() throws IOException {
-        InputStream stream = PKASmartsDescriptor.class.getClassLoader().getResourceAsStream("ambit2/descriptors/pkatree.txt");
+        InputStream stream = PKASmartsDescriptor.class.getClassLoader().getResourceAsStream("org/openscience/cdk/qsar/molecular/data/pkatree.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
         int record = 0;
