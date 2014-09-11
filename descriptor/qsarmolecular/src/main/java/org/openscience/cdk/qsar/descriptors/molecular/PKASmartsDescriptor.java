@@ -115,7 +115,7 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
 
     }
 
-    protected PKANode traverse(IAtomContainer ac, PKANode node, ArrayList<String> trace) throws SMARTSException {
+    protected PKANode traverse(IAtomContainer ac, PKANode node, ArrayList<String> trace) {
     	
     	if (node.isTerminal()) {
     		return node;
