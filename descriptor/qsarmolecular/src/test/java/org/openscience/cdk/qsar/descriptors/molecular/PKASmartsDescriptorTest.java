@@ -33,9 +33,11 @@ import org.junit.Test;
 import org.openscience.cdk.aromaticity.Aromaticity;
 import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.graph.Cycles;
+import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.isomorphism.IsomorphismTester;
 import org.openscience.cdk.isomorphism.matchers.IQueryAtomContainer;
+import org.openscience.cdk.qsar.AtomValenceTool;
 import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.result.DoubleResult;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
@@ -103,6 +105,11 @@ public class PKASmartsDescriptorTest {
     	 hAdder.addImplicitHydrogens(mol);
     	 AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	 cdk.apply(mol);
+    	 for (int i=0; i < mol.getAtomCount();i++) {
+    		 IAtom atom = mol.getAtom(i);
+    		 atom.setValency(AtomValenceTool.getValence(atom));
+    	 }
+
     	 PKANode node = new PKANode();
     	 node.setSmarts("[G14;H][^1,^2]");
     	 Assert.assertTrue(node.find(mol));
@@ -115,6 +122,11 @@ public class PKASmartsDescriptorTest {
     	hAdder.addImplicitHydrogens(mol);
     	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	cdk.apply(mol);
+    	for (int i=0; i < mol.getAtomCount();i++) {
+    		IAtom atom = mol.getAtom(i);
+    		atom.setValency(AtomValenceTool.getValence(atom));
+    	}
+
     	PKANode node = new PKANode();
     	node.setSmarts("[^1,^2][G14v2]");
     	Assert.assertFalse(node.find(mol));
@@ -143,9 +155,11 @@ public class PKASmartsDescriptorTest {
     	hAdder.addImplicitHydrogens(mol);
     	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	cdk.apply(mol);
-    	
+
 		for (int i=0; i < mol.getAtomCount();i++) {
-			Assert.assertNotNull(mol.getAtom(i).getValency());
+    		IAtom atom = mol.getAtom(i);
+        	atom.setValency(AtomValenceTool.getValence(atom));
+    		Assert.assertNotNull(atom.getValency());
 		}
 		for (int i=0; i < mol.getBondCount();i++) {
 			Assert.assertNotNull(mol.getBond(i).getOrder());
@@ -163,9 +177,11 @@ public class PKASmartsDescriptorTest {
     	hAdder.addImplicitHydrogens(mol);
     	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	cdk.apply(mol);
-
+    	
     	for (int i=0; i < mol.getAtomCount();i++) {
-    		Assert.assertNotNull(mol.getAtom(i).getValency());
+    		IAtom atom = mol.getAtom(i);
+        	atom.setValency(AtomValenceTool.getValence(atom));
+    		Assert.assertNotNull(atom.getValency());
     	}
     	for (int i=0; i < mol.getBondCount();i++) {
     		Assert.assertNotNull(mol.getBond(i).getOrder());
