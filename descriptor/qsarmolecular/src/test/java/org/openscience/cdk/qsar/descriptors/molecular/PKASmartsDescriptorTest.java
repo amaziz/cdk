@@ -37,6 +37,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.isomorphism.IsomorphismTester;
 import org.openscience.cdk.isomorphism.matchers.IQueryAtomContainer;
 import org.openscience.cdk.qsar.DescriptorValue;
+import org.openscience.cdk.qsar.result.DoubleResult;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
@@ -103,7 +104,7 @@ public class PKASmartsDescriptorTest {
     	 AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	 cdk.apply(mol);
     	 PKANode node = new PKANode();
-    	 node.setSmarts("[#G6;H][i]");
+    	 node.setSmarts("[G14;H][^1,^2]");
     	 Assert.assertTrue(node.find(mol));
     }
     
@@ -115,13 +116,13 @@ public class PKASmartsDescriptorTest {
     	AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
     	cdk.apply(mol);
     	PKANode node = new PKANode();
-    	node.setSmarts("[i][#G6v2]");
+    	node.setSmarts("[^1,^2][G14v2]");
     	Assert.assertFalse(node.find(mol));
     }
 
     @Test
     public void testAcid15()  throws Exception {
-    	String smarts = "[i][#G6v2]";
+    	String smarts = "[^1,^2][G14v2]";
     	String smiles = "O[N+](=O)[O-]";
 
     	IQueryAtomContainer query = SMARTSParser.parse(smarts, SilentChemObjectBuilder.getInstance());
