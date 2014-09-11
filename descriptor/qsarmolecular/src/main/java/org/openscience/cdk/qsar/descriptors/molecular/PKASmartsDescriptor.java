@@ -68,14 +68,13 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
     }
     public DescriptorValue calculate(IAtomContainer arg0)  {
         try {
-        	ArrayList<String> trace = new ArrayList<String>();
-            PKANode node = traverse(arg0, root,trace);
+            PKANode node = traverse(arg0, root);
 
             return new DescriptorValue(getSpecification(), getParameterNames(), 
-                    getParameters(),
-                    new VerboseDescriptorResult<String,DoubleResult>(new DoubleResult(node.getPka()),trace.toString()),
-                    title);        
-            
+                getParameters(),
+                new DoubleResult(node.getPka()),
+                title
+            );
         } catch (Exception x) {
             return new DescriptorValue(getSpecification(), getParameterNames(), 
                     getParameters(),
@@ -115,7 +114,7 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
 
     }
 
-    protected PKANode traverse(IAtomContainer ac, PKANode node, ArrayList<String> trace) {
+    protected PKANode traverse(IAtomContainer ac, PKANode node) {
     	
     	if (node.isTerminal()) {
     		return node;
@@ -124,11 +123,10 @@ public class PKASmartsDescriptor implements IMolecularDescriptor {
 	    	for (boolean result : results) {
 	    		PKANode next = node.getNodeNo(result);
 	    		if (next.find(ac) == next.isPresent())  {
-	    			trace.add(Integer.toString(next.getId())+((next.isPresent()) ? 'Y' : 'N'));
 	    			if (next.isTerminal()) {
 	    				return next;
 	    			} else {
-	    				return traverse(ac, next,trace);
+	    				return traverse(ac, next);
 	    			}	
 	    		}	
 	    	}
