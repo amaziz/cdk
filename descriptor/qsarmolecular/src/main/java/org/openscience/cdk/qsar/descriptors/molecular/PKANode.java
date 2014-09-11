@@ -1,11 +1,6 @@
-/* PKANode.java
- * Author: Nina Jeliazkova
- * Date: Oct 3, 2008 
- * Revision: 0.1 
+/* Copyright (C) 2005-2008  Nina Jeliazkova <nina@acad.bg>
  * 
- * Copyright (C) 2005-2008  Nina Jeliazkova
- * 
- * Contact: nina@acad.bg
+ * Contact: cdk-devel@lists.sourceforge.net
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -24,9 +19,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
  */
-
 package ambit2.descriptors;
 
 import java.util.Hashtable;
