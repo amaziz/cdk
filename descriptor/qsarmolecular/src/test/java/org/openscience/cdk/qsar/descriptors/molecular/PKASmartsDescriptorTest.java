@@ -29,35 +29,18 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import junit.framework.Assert;
-import net.idea.modbcum.i.exceptions.AmbitException;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openscience.cdk.aromaticity.CDKHueckelAromaticityDetector;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.isomorphism.matchers.IQueryAtomContainer;
 import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.result.DoubleResult;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.templates.MoleculeFactory;
-
-import ambit2.base.config.Preferences;
-import ambit2.core.io.DelimitedFileWriter;
-import ambit2.core.io.IteratingDelimitedFileReader;
-import ambit2.core.processors.structure.AtomConfigurator;
-import ambit2.core.processors.structure.HydrogenAdderProcessor;
-import ambit2.descriptors.PKANode;
-import ambit2.descriptors.PKASmartsDescriptor;
-import ambit2.descriptors.VerboseDescriptorResult;
-import ambit2.smarts.IsomorphismTester;
-import ambit2.smarts.SmartsHelper;
-import ambit2.smarts.SmartsParser;
-import ambit2.smarts.query.SmartsPatternAmbit;
 
 public class PKASmartsDescriptorTest {
 	protected PKASmartsDescriptor pka;

@@ -27,9 +27,6 @@ import java.util.Hashtable;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
-import ambit2.smarts.query.SMARTSException;
-import ambit2.smarts.query.SmartsPatternAmbit;
-
 public class PKANode {
 	protected static Hashtable<String,SmartsPatternAmbit> smartsPattern = new Hashtable<String,SmartsPatternAmbit>();
     protected int id;
