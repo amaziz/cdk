@@ -83,7 +83,7 @@ import org.openscience.cdk.qsar.result.IDescriptorResult;
  * @see        DescriptorValue
  * @see        IDescriptorResult
  */
-public interface IDescriptor {
+public interface IDescriptor<T> {
 
     /**
      * Initialise the descriptor with the specified chem object builder. This

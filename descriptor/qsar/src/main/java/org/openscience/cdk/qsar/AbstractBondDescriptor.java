@@ -34,11 +34,11 @@ import org.openscience.cdk.qsar.result.IDescriptorResult;
  * @cdk.module qsar
  * @cdk.githash
  */
-public abstract class AbstractBondDescriptor extends AbstractDescriptor implements IBondDescriptor {
+public abstract class AbstractBondDescriptor<T> extends AbstractDescriptor<T> implements IBondDescriptor<T> {
 
     private static final String PREVIOUS_ATOMCONTAINER = "previousAtomContainer";
 
-    private Map                 cachedDescriptorValues = null;
+    private Map<Object,Object> cachedDescriptorValues = null;
 
     /**
      * Returns true if the cached IDescriptorResult's are for the given IAtomContainer.
@@ -57,9 +57,9 @@ public abstract class AbstractBondDescriptor extends AbstractDescriptor implemen
      * @param bond the IAtom for which the DescriptorValue is requested
      * @return     null, if no DescriptorValue was cached for the given IBond
      */
-    public IDescriptorResult getCachedDescriptorValue(IBond bond) {
+    public T getCachedDescriptorValue(IBond bond) {
         if (cachedDescriptorValues == null) return null;
-        return (IDescriptorResult) cachedDescriptorValues.get(bond);
+        return (T)cachedDescriptorValues.get(bond);
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class AbstractBondDescriptor extends AbstractDescriptor implemen
      */
     public void cacheDescriptorValue(IBond bond, IAtomContainer container, IDescriptorResult doubleResult) {
         if (cachedDescriptorValues == null) {
-            cachedDescriptorValues = new HashMap();
+            cachedDescriptorValues = new HashMap<Object,Object>();
             cachedDescriptorValues.put(PREVIOUS_ATOMCONTAINER, container);
         } else if (cachedDescriptorValues.get(PREVIOUS_ATOMCONTAINER) != container) {
             cachedDescriptorValues.clear();

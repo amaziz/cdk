@@ -19,10 +19,10 @@
 package org.openscience.cdk.qsar;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.openscience.cdk.annotations.TestClass;
 import org.openscience.cdk.annotations.TestMethod;
-import org.openscience.cdk.qsar.result.*;
 
 /**
  * Class that is used to store descriptor values as IChemObject properties.
@@ -31,14 +31,14 @@ import org.openscience.cdk.qsar.result.*;
  * @cdk.githash
  */
 @TestClass("org.openscience.cdk.qsar.DescriptorValueTest")
-public class DescriptorValue implements Serializable {
+public class DescriptorValue<T> implements Serializable {
 
     private static final long       serialVersionUID = -5672896059814842972L;
 
     private DescriptorSpecification specification;
     private String[]                parameterNames;
     private Object[]                parameterSettings;
-    private IDescriptorResult       value;
+    private T				        value;
     private String[]                descriptorNames;
     private Exception               exception;
 
@@ -54,7 +54,7 @@ public class DescriptorValue implements Serializable {
      * @param descriptorNames The names of the values
      */
     public DescriptorValue(DescriptorSpecification specification, String[] parameterNames, Object[] parameterSettings,
-            IDescriptorResult value, String[] descriptorNames) {
+            T value, String[] descriptorNames) {
         this(specification, parameterNames, parameterSettings, value, descriptorNames, null);
 
     }
@@ -73,7 +73,7 @@ public class DescriptorValue implements Serializable {
      * calculation
      */
     public DescriptorValue(DescriptorSpecification specification, String[] parameterNames, Object[] parameterSettings,
-            IDescriptorResult value, String[] descriptorNames, Exception exception) {
+            T value, String[] descriptorNames, Exception exception) {
         this.specification = specification;
         this.parameterNames = parameterNames;
         this.parameterSettings = parameterSettings;
@@ -98,7 +98,7 @@ public class DescriptorValue implements Serializable {
     }
 
     @TestMethod("testGetValue")
-    public IDescriptorResult getValue() {
+    public T getValue() {
         return this.value;
     }
 
@@ -133,15 +133,15 @@ public class DescriptorValue implements Serializable {
     public String[] getNames() {
         if (descriptorNames == null || descriptorNames.length == 0) {
             String title = specification.getImplementationTitle();
-            if (value instanceof BooleanResult || value instanceof DoubleResult || value instanceof IntegerResult) {
+            if (value instanceof Boolean || value instanceof Double || value instanceof Integer) {
                 descriptorNames = new String[1];
                 descriptorNames[0] = title;
             } else {
                 int ndesc = 0;
-                if (value instanceof DoubleArrayResult) {
-                    ndesc = value.length();
-                } else if (value instanceof IntegerArrayResult) {
-                    ndesc = value.length();
+                if (value instanceof List) {
+                    @SuppressWarnings("unchecked")
+					List<T> list = (List<T>)value;
+					ndesc = list.size();
                 }
                 descriptorNames = new String[ndesc];
                 for (int i = 1; i < ndesc + 1; i++)
@@ -151,4 +151,8 @@ public class DescriptorValue implements Serializable {
         return descriptorNames;
     }
 
+    public int length() {
+    	return getNames().length;
+    }
+    
 }

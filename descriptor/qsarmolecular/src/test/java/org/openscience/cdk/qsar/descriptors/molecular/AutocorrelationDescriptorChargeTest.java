@@ -32,7 +32,7 @@ public class AutocorrelationDescriptorChargeTest extends MolecularDescriptorTest
         MDLV2000Reader reader = new MDLV2000Reader(ins);
         IAtomContainer container = reader.read(new AtomContainer());
         DescriptorValue count = descriptor.calculate(container);
-        Assert.assertEquals(5, count.getValue().length());
+        Assert.assertEquals(5, count.length());
         Assert.assertTrue(count.getValue() instanceof DoubleArrayResult);
         DoubleArrayResult result = (DoubleArrayResult) count.getValue();
         for (int i = 0; i < 5; i++) {

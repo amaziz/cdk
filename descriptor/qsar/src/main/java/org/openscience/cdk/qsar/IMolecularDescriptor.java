@@ -28,7 +28,7 @@ import org.openscience.cdk.qsar.result.IDescriptorResult;
  * @cdk.module qsar
  * @cdk.githash
  */
-public interface IMolecularDescriptor extends IDescriptor {
+public interface IMolecularDescriptor<T> extends IDescriptor<T> {
 
     /**
      * Calculates the descriptor value for the given IAtomContainer.
@@ -38,23 +38,6 @@ public interface IMolecularDescriptor extends IDescriptor {
      * @return An object of {@link DescriptorValue} that contain the
      *         calculated value as well as specification details
      */
-    public DescriptorValue calculate(IAtomContainer container);
-
-    /**
-     * Returns the specific type of the DescriptorResult object.
-     * The return value from this method really indicates what type of result will
-     * be obtained from the {@link DescriptorValue} object. Note that the same result
-     * can be achieved by interrogating the {@link DescriptorValue} object; this method
-     * allows you to do the same thing, without actually calculating the descriptor.
-     *
-     * <p>Additionally, the length indicated by the result type must match the actual
-     * length of a descriptor calculated with the current parameters. Typically, the
-     * length of array result types vary with the values of the parameters. See
-     * {@link IDescriptor} for more details.
-     *
-     * @return an object that implements the {@link IDescriptorResult} interface indicating
-     *         the actual type of values returned by the descriptor in the {@link DescriptorValue} object
-     */
-    public IDescriptorResult getDescriptorResultType();
+    public DescriptorValue<T> calculate(IAtomContainer container);
 
 }

@@ -19,6 +19,7 @@
 package org.openscience.cdk.qsar.descriptors.molecular;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,12 +28,11 @@ import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.qsar.DescriptorValue;
-import org.openscience.cdk.qsar.result.DoubleArrayResult;
 
 /**
  * @cdk.module test-qsarmolecular
  */
-public class AutocorrelationDescriptorMassTest extends MolecularDescriptorTest {
+public class AutocorrelationDescriptorMassTest extends MolecularDescriptorTest<List<Double>> {
 
     public AutocorrelationDescriptorMassTest() {
         super();
@@ -49,10 +49,9 @@ public class AutocorrelationDescriptorMassTest extends MolecularDescriptorTest {
         InputStream ins = this.getClass().getClassLoader().getResourceAsStream(filename);
         MDLV2000Reader reader = new MDLV2000Reader(ins);
         IAtomContainer container = reader.read(new AtomContainer());
-        DescriptorValue count = new AutocorrelationDescriptorMass().calculate(container);
-        Assert.assertEquals(5, count.getValue().length());
-        Assert.assertTrue(count.getValue() instanceof DoubleArrayResult);
-        DoubleArrayResult result = (DoubleArrayResult) count.getValue();
+        DescriptorValue<List<Double>> count = new AutocorrelationDescriptorMass().calculate(container);
+        Assert.assertEquals(5, count.length());
+        List<Double> result = count.getValue();
         for (int i = 0; i < 5; i++) {
             Assert.assertFalse(Double.isNaN(result.get(i)));
             Assert.assertTrue(0.0 != result.get(i));

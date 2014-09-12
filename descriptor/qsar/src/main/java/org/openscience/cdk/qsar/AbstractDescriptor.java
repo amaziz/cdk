@@ -32,7 +32,7 @@ import org.openscience.cdk.interfaces.IChemObjectBuilder;
  * @author John May
  * @cdk.module qsar
  */
-abstract class AbstractDescriptor implements IDescriptor {
+abstract class AbstractDescriptor<T> implements IDescriptor<T> {
 
     /**
      * Default implementation of initialise allows optional override.

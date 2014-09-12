@@ -27,7 +27,7 @@ import org.openscience.cdk.interfaces.IBond;
  * @cdk.module qsar
  * @cdk.githash
  */
-public interface IBondDescriptor extends IDescriptor {
+public interface IBondDescriptor<T> extends IDescriptor<T> {
 
     /**
      * Calculates the descriptor value for the given IBond.
@@ -38,6 +38,6 @@ public interface IBondDescriptor extends IDescriptor {
      * @return An object of {@link DescriptorValue} that contain the
      *         calculated value as well as specification details
      */
-    public DescriptorValue calculate(IBond bond, IAtomContainer atomContainer);
+    public DescriptorValue<T> calculate(IBond bond, IAtomContainer atomContainer);
 
 }

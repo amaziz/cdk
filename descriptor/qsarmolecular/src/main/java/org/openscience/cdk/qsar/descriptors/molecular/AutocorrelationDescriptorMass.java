@@ -18,10 +18,13 @@
  */
 package org.openscience.cdk.qsar.descriptors.molecular;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openscience.cdk.annotations.TestClass;
 import org.openscience.cdk.annotations.TestMethod;
-import org.openscience.cdk.config.Isotopes;
 import org.openscience.cdk.config.IsotopeFactory;
+import org.openscience.cdk.config.Isotopes;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.graph.matrix.TopologicalMatrix;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -30,9 +33,6 @@ import org.openscience.cdk.qsar.AbstractMolecularDescriptor;
 import org.openscience.cdk.qsar.DescriptorSpecification;
 import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.IMolecularDescriptor;
-import org.openscience.cdk.qsar.result.DoubleArrayResult;
-import org.openscience.cdk.qsar.result.DoubleArrayResultType;
-import org.openscience.cdk.qsar.result.IDescriptorResult;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 /**
@@ -46,7 +46,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
  * @cdk.set     qsar-descriptors
  */
 @TestClass("org.openscience.cdk.qsar.descriptors.molecular.AutocorrelationDescriptorMassTest")
-public class AutocorrelationDescriptorMass extends AbstractMolecularDescriptor implements IMolecularDescriptor {
+public class AutocorrelationDescriptorMass extends AbstractMolecularDescriptor<List<Double>> implements IMolecularDescriptor<List<Double>> {
 
     private final static String[] names       = {"ATSm1", "ATSm2", "ATSm3", "ATSm4", "ATSm5"};
     private final static double   CARBON_MASS = 12.010735896788;
@@ -74,16 +74,16 @@ public class AutocorrelationDescriptorMass extends AbstractMolecularDescriptor i
      * This method calculate the ATS Autocorrelation descriptor.
      */
     @TestMethod("test1")
-    public DescriptorValue calculate(IAtomContainer atomContainer) {
+    public DescriptorValue<List<Double>> calculate(IAtomContainer atomContainer) {
         IAtomContainer container;
         try {
             container = (IAtomContainer) atomContainer.clone();
             container = AtomContainerManipulator.removeHydrogens(container);
         } catch (CloneNotSupportedException e) {
-            DoubleArrayResult result = new DoubleArrayResult(5);
+        	List<Double> result = new ArrayList<Double>(5);
             for (int i = 0; i < 5; i++)
                 result.add(Double.NaN);
-            return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(), result,
+            return new DescriptorValue<List<Double>>(getSpecification(), getParameterNames(), getParameters(), result,
                     getDescriptorNames(), new CDKException("Error during cloner: " + e.getMessage(), e));
         }
 
@@ -106,19 +106,19 @@ public class AutocorrelationDescriptorMass extends AbstractMolecularDescriptor i
                 if (k > 0) masSum[k] = masSum[k] / 2;
 
             }
-            DoubleArrayResult result = new DoubleArrayResult(5);
+            List<Double> result = new ArrayList<Double>(5);
             for (double aMasSum : masSum) {
                 result.add(aMasSum);
             }
 
-            return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(), result,
+            return new DescriptorValue<List<Double>>(getSpecification(), getParameterNames(), getParameters(), result,
                     getDescriptorNames());
 
         } catch (Exception ex) {
-            DoubleArrayResult result = new DoubleArrayResult(5);
+        	List<Double> result = new ArrayList<Double>(5);
             for (int i = 0; i < 5; i++)
                 result.add(Double.NaN);
-            return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(), result,
+            return new DescriptorValue<List<Double>>(getSpecification(), getParameterNames(), getParameters(), result,
                     getDescriptorNames(), new CDKException("Error while calculating the ATS_mass descriptor: "
                             + ex.getMessage(), ex));
         }
@@ -149,11 +149,6 @@ public class AutocorrelationDescriptorMass extends AbstractMolecularDescriptor i
         return new DescriptorSpecification(
                 "http://www.blueobelisk.org/ontologies/chemoinformatics-algorithms/#autoCorrelationMass", this
                         .getClass().getName(), "The Chemistry Development Kit");
-    }
-
-    @TestMethod("testGetDescriptorResultType")
-    public IDescriptorResult getDescriptorResultType() {
-        return new DoubleArrayResultType(5);
     }
 
     @TestMethod("testSetParameters_arrayObject")
