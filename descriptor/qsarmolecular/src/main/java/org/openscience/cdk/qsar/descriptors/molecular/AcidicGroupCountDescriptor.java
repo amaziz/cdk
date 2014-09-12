@@ -31,9 +31,6 @@ import org.openscience.cdk.qsar.AbstractMolecularDescriptor;
 import org.openscience.cdk.qsar.DescriptorSpecification;
 import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.IMolecularDescriptor;
-import org.openscience.cdk.qsar.result.IDescriptorResult;
-import org.openscience.cdk.qsar.result.IntegerResult;
-import org.openscience.cdk.qsar.result.IntegerResultType;
 import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
@@ -50,7 +47,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
  * @cdk.dictref qsar-descriptors:acidicGroupCount
  */
 @TestClass("org.openscience.cdk.qsar.descriptors.molecular.AcidicGroupCountDescriptorTest")
-public class AcidicGroupCountDescriptor extends AbstractMolecularDescriptor implements IMolecularDescriptor {
+public class AcidicGroupCountDescriptor extends AbstractMolecularDescriptor<Integer> implements IMolecularDescriptor<Integer> {
 
     private final static String[] SMARTS_STRINGS = {"[$([O;H1]-[C,S,P]=O)]", "[$([*;-;!$(*~[*;+])])]",
             "[$([NH](S(=O)=O)C(F)(F)F)]", "[$(n1nnnc1)]"};
@@ -113,7 +110,7 @@ public class AcidicGroupCountDescriptor extends AbstractMolecularDescriptor impl
 
     /** {@inheritDoc} */
     @TestMethod("testCalculate_IAtomContainer")
-    public DescriptorValue calculate(IAtomContainer atomContainer) {
+    public DescriptorValue<Integer> calculate(IAtomContainer atomContainer) {
 
         if (tools.isEmpty()) {
             throw new IllegalStateException("descriptor is not initalised, invoke 'initalise' first");
@@ -134,17 +131,11 @@ public class AcidicGroupCountDescriptor extends AbstractMolecularDescriptor impl
             for (SMARTSQueryTool tool : tools) {
                 if (tool.matches(atomContainer)) count += tool.countMatches();
             }
-            return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(), new IntegerResult(
-                    count), getDescriptorNames());
+            return new DescriptorValue<Integer>(getSpecification(), getParameterNames(), getParameters(),
+            		count, getDescriptorNames());
         } catch (CDKException exception) {
             return getDummyDescriptorValue(exception);
         }
-    }
-
-    /** {@inheritDoc} */
-    @TestMethod("testGetDescriptorResultType")
-    public IDescriptorResult getDescriptorResultType() {
-        return new IntegerResultType();
     }
 
     /** {@inheritDoc} */
@@ -164,8 +155,8 @@ public class AcidicGroupCountDescriptor extends AbstractMolecularDescriptor impl
         return (object);
     }
 
-    private DescriptorValue getDummyDescriptorValue(Exception exception) {
-        return new DescriptorValue(getSpecification(), getParameterNames(), getParameters(), new IntegerResult(-1),
+    private DescriptorValue<Integer> getDummyDescriptorValue(Exception exception) {
+        return new DescriptorValue<Integer>(getSpecification(), getParameterNames(), getParameters(), -1,
                 getDescriptorNames(), exception);
     }
 }

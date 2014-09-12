@@ -27,7 +27,6 @@ import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.qsar.result.IntegerResult;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
@@ -35,7 +34,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 /**
  * @cdk.module test-qsarmolecular
  */
-public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
+public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest<Integer> {
 
     @Before
     public void setUp() throws Exception {
@@ -56,7 +55,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
     public void testOneAcidGroup() throws Exception {
         SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
         IAtomContainer mol = sp.parseSmiles("CC(=O)O");
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(1, result.intValue());
     }
 
@@ -64,7 +63,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
     public void testSulphurAcidGroup() throws Exception {
         SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
         IAtomContainer mol = sp.parseSmiles("OS(=O)(=O)O");
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(2, result.intValue());
     }
 
@@ -73,7 +72,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
         SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
         IAtomContainer mol = sp.parseSmiles("O=P(=O)O");
         AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(1, result.intValue());
     }
 
@@ -82,7 +81,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
         SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
         IAtomContainer mol = sp.parseSmiles("[NH](S(=O)=O)C(F)(F)F");
         AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(1, result.intValue());
     }
 
@@ -90,7 +89,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
     public void testNitroRing() throws Exception {
         SmilesParser sp = new SmilesParser(SilentChemObjectBuilder.getInstance());
         IAtomContainer mol = sp.parseSmiles("[nH]1nnnc1");
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(2, result.intValue());
     }
 
@@ -164,7 +163,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
         AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
         addImplicitHydrogens(mol);
 
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(3, result.intValue());
     }
 
@@ -348,7 +347,7 @@ public class AcidicGroupCountDescriptorTest extends MolecularDescriptorTest {
         mol.addBond(b28);
         AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
         addImplicitHydrogens(mol);
-        IntegerResult result = (IntegerResult) descriptor.calculate(mol).getValue();
+        Integer result = descriptor.calculate(mol).getValue();
         Assert.assertEquals(2, result.intValue());
     }
 }
